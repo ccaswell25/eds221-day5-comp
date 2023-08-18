@@ -43,16 +43,16 @@ Add line-by-line comments wheres prompted in the code below, explaining what eac
 # ------ WHAT HAPPENS HERE? ------ #
 # ------ comment line-by-line ---- #
 
-# The line below...
+# Let's create a time sequence from 0 to 8 years by 1 year
 time_yr <- seq(from = 0, to = 8, by = 1)
 
-# The line below...
+# Let's create an empty matrix that has 4 columns (life stage) and 8 rows (year) using the lengths of our previously created vectors
 proj_year <- matrix(ncol = length(fish_year0), nrow = length(time_yr))
 
-# The line below...
+# This is allowing us to populate our initial population values in the first row (year 0) of values in our empty matrix
 proj_year[1, ] <- fish_year0
 
-# The for loop below...
+# The for loop below is showing let's populate the remaining values in our matrix starting at row 2 and going to the length of our year vector (in this case that is year 8). We are calculating the dot product using our growth rates from the leslie matrix and the row containing the population data from the previous cycle/year
 for (i in 2:length(time_yr)) {
   proj_year[i,] <- fish_leslie %*% proj_year[i-1,]
 }
@@ -63,6 +63,8 @@ colnames(proj_year) <- c("eggs", "fry", "juvenile", "adult")
 
 proj_df <- data.frame(time_yr, proj_year) %>% 
   pivot_longer(cols = -time_yr, names_to = "lifestage", values_to = "stage_population")
+
+#pivot longer allows us to instead of having life stages in individual columns we can create one column with repeated lifestages making a longer dataframe
 
 ggplot(data = proj_df, aes(x = time_yr, y = stage_population)) +
   geom_line(aes(color = lifestage)) +

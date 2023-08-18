@@ -1,0 +1,44 @@
+---
+title: "testing-functions"
+format: html
+editor: visual
+---
+
+```{r}
+library(testthat)
+```
+
+## Function Testing 
+
+Write a function
+
+```{r}
+#We're calculating the means across columns in a dataframe. We can use apply to say apply something to all of the columns (margin=2) in this dataframe. Then find the max and min of those means. Then I want to return a vector that contains the min and max.
+
+mean_range <- function(df){
+  col_means <- apply(X = df,MARGIN = 2, FUN = mean, na.rm = TRUE)
+  col_mean_max <- max(col_means)
+  col_mean_min <- min(col_means)
+  return(c(col_mean_min, col_mean_max))
+}
+```
+
+```{r}
+#Let's try out the function on a few dataframes:
+mean_range(mtcars)
+mean_range(faithful)
+```
+
+Write some unit tests using testthat(). First make sure you attach the package at the top. We need to give it an example to test. In this example we use mtcars.
+
+```{r}
+expect_length(mean_range(mtcars), 2)
+```
+
+```{r}
+expect_type(mean_range(mtcars), "double")
+```
+
+```{r}
+expect_true(mean_range(mtcars)[1] <= mean_range(mtcars)[2])
+```
