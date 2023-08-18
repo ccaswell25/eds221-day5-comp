@@ -42,3 +42,18 @@ expect_type(mean_range(mtcars), "double")
 ```{r}
 expect_true(mean_range(mtcars)[1] <= mean_range(mtcars)[2])
 ```
+
+How can we reference a function we created somewhere else in our working directory? We need to use the here() function to tell it where our function lives, which is in the "src" folder. Then we can use the source function to reference it and use it in a different file.
+
+```{r}
+source(here::here("src", "name_cart.R"))
+```
+
+```{r}
+name_cart(food = "enchilada", animal = "bunny")
+```
+
+```{r}
+source(here::here("src", "cork_oak_growth.R"))
+height_t2(height_t1 = 35, t1 = 3, t2 = 6)
+```
